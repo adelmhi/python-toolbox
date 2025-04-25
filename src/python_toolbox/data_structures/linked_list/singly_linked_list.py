@@ -14,18 +14,19 @@ Example:
     [0, 1, 2]
 """
 
-from typing import Any, Optional, Iterator
+from typing import Any, Iterator, Optional
 
 
 class Node:
     """
     A node in the singly linked list.
-    
+
     Attributes:
         data (Any): The data stored in the node
         next (Optional[Node]): Reference to the next node in the list
     """
-    def __init__(self, data: Any, next: "Node" = None):
+
+    def __init__(self, data: Any, next: Optional["Node"] = None):
         self.data = data
         self.next: Optional[Node] = next
 
@@ -33,16 +34,16 @@ class Node:
 class SinglyLinkedList:
     """
     A singly linked list implementation with a tail pointer.
-    
+
     This implementation provides O(1) append and prepend operations by maintaining
     a tail pointer. It supports iteration, length checking, and various insertion
     and deletion operations.
-    
+
     Attributes:
         __head (Optional[Node]): The first node in the list
         __tail (Optional[Node]): The last node in the list
         __size (int): The number of nodes in the list
-    
+
     Example:
         >>> lst = SinglyLinkedList()
         >>> lst.append(1)
@@ -53,8 +54,8 @@ class SinglyLinkedList:
         >>> list(lst)
         [0, 1, 2]
     """
-    
-    def __init__(self):
+
+    def __init__(self) -> None:
         self.__head: Optional[Node] = None
         self.__tail: Optional[Node] = None
         self.__size: int = 0
@@ -62,10 +63,10 @@ class SinglyLinkedList:
     def __len__(self) -> int:
         """
         Return the number of nodes in the list.
-        
+
         Returns:
             int: The number of nodes in the list
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -77,10 +78,10 @@ class SinglyLinkedList:
     def __iter__(self) -> Iterator[Any]:
         """
         Iterate over the data in the list.
-        
+
         Yields:
             Any: The data stored in each node
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -96,10 +97,10 @@ class SinglyLinkedList:
     def is_empty(self) -> bool:
         """
         Check if the list is empty.
-        
+
         Returns:
             bool: True if the list is empty, False otherwise
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.is_empty()
@@ -113,7 +114,7 @@ class SinglyLinkedList:
     def __is_singleton(self) -> bool:
         """
         Check if the list has only one node.
-        
+
         Returns:
             bool: True if the list has exactly one node, False otherwise
         """
@@ -122,10 +123,10 @@ class SinglyLinkedList:
     def __get_previous_node(self, target_node: Node) -> Optional[Node]:
         """
         Get the previous node of the target node.
-        
+
         Args:
             target_node (Node): The node whose previous node we want to find
-            
+
         Returns:
             Optional[Node]: The previous node if found, None otherwise
         """
@@ -137,12 +138,12 @@ class SinglyLinkedList:
     def append(self, data: Any) -> None:
         """
         Append a new node with the given data to the end of the list.
-        
+
         This operation is O(1) due to the tail pointer.
-        
+
         Args:
             data: The data to append
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -161,12 +162,12 @@ class SinglyLinkedList:
     def prepend(self, data: Any) -> None:
         """
         Prepend a new node with the given data to the beginning of the list.
-        
+
         This operation is O(1).
-        
+
         Args:
             data: The data to prepend
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.prepend(2)
@@ -183,17 +184,17 @@ class SinglyLinkedList:
     def insert_after(self, target_data: Any, data: Any) -> None:
         """
         Insert a new node with the given data after the node containing target_data.
-        
+
         This operation is O(n) in the worst case as it requires traversing the list
         to find the target node.
-        
+
         Args:
             target_data: The data of the node after which to insert
             data: The data to insert
-            
+
         Raises:
             ValueError: If target_data is not found in the list
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -205,17 +206,17 @@ class SinglyLinkedList:
         current = self.__head
         while current is not None and current.data != target_data:
             current = current.next
-            
+
         if current is None:
             raise ValueError(f"Target data {target_data} not found in the list")
-            
+
         new_node = Node(data)
         new_node.next = current.next
         current.next = new_node
-        
+
         if current == self.__tail:
             self.__tail = new_node
-            
+
         self.__size += 1
 
     def get_index(self, data: Any) -> int:
@@ -224,13 +225,13 @@ class SinglyLinkedList:
 
         This operation is O(n) in the worst case as it requires traversing the list
         to find the target node.
-        
+
         Args:
             data: The data to search for
-            
+
         Returns:
             int: The index of the first occurrence, or -1 if not found
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -250,10 +251,10 @@ class SinglyLinkedList:
     def delete_first(self) -> bool:
         """
         Delete the first node in the list.
-        
+
         Returns:
             bool: True if the deletion was successful, False otherwise
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -270,7 +271,7 @@ class SinglyLinkedList:
             self.__head = self.__tail = None
         else:
             new_head = self.__head.next
-            self.__head = None # help garbage collection
+            self.__head = None  # help garbage collection
             self.__head = new_head
         self.__size -= 1
         return True
@@ -278,10 +279,10 @@ class SinglyLinkedList:
     def delete_last(self) -> bool:
         """
         Delete the last node in the list.
-        
+
         Returns:
             bool: True if the deletion was successful, False otherwise
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -298,7 +299,7 @@ class SinglyLinkedList:
             self.__head = self.__tail = None
         else:
             new_tail = self.__get_previous_node(self.__tail)
-            new_tail.next = None # help garbage collection
+            new_tail.next = None  # help garbage collection
             self.__tail = new_tail
         self.__size -= 1
         return True
@@ -306,13 +307,13 @@ class SinglyLinkedList:
     def delete_index(self, index: int) -> bool:
         """
         Delete the node at the given index.
-        
+
         Args:
             index: The index of the node to delete
-            
+
         Returns:
             bool: True if the deletion was successful, False otherwise
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -328,7 +329,7 @@ class SinglyLinkedList:
             return False
         elif index == 0:
             return self.delete_first()
-        elif index == self.__size -1:
+        elif index == self.__size - 1:
             return self.delete_last()
         else:
             previous = self.__head
@@ -336,20 +337,20 @@ class SinglyLinkedList:
                 previous = previous.next
             current = previous.next
             previous.next = current.next
-            current.next = None # help garbage collection
+            current.next = None  # help garbage collection
             self.__size -= 1
             return True
 
     def remove(self, data: Any) -> bool:
         """
         Remove the first node containing the given data.
-        
+
         Args:
             data: The data to remove
-            
+
         Returns:
             bool: True if the removal was successful, False otherwise
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -363,7 +364,7 @@ class SinglyLinkedList:
         if self.is_empty():
             print("Warning: Cannot remove from empty list")
             return False
-            
+
         index = self.get_index(data)
         if index == -1:
             print(f"Warning: Data {data} not found in the list")
@@ -373,15 +374,15 @@ class SinglyLinkedList:
     def get_last(self) -> Any:
         """
         Get the data of the last node in the list.
-        
+
         This operation is O(1) due to the tail pointer.
-        
+
         Returns:
             Any: The data of the last node
-            
+
         Raises:
             IndexError: If the list is empty
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -396,13 +397,13 @@ class SinglyLinkedList:
     def contains(self, data: Any) -> bool:
         """
         Indicates if the list contains the given data.
-        
+
         Args:
             data: The data to search for
-            
+
         Returns:
             bool: True if the data is found, False otherwise
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -417,10 +418,10 @@ class SinglyLinkedList:
     def __str__(self) -> str:
         """
         Return a string representation of the list.
-        
+
         Returns:
             str: A string representation of the list
-            
+
         Example:
             >>> lst = SinglyLinkedList()
             >>> lst.append(1)
@@ -433,16 +434,17 @@ class SinglyLinkedList:
         while current is not None:
             elements.append(str(current.data))
             current = current.next
-        return ' -> '.join(elements) 
-    
+        return " -> ".join(elements)
+
     def __repr__(self) -> str:
         """
         Return a string representation of the list.
-        
+
         Returns:
             str: A string representation of the list
         """
         return self.__str__()
+
 
 if __name__ == "__main__":
     lst = SinglyLinkedList()
@@ -450,4 +452,3 @@ if __name__ == "__main__":
     print(lst)
     lst.prepend(1)
     print(lst)
-

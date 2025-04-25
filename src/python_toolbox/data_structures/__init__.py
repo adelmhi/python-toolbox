@@ -2,8 +2,6 @@
 Data Structures package containing various data structure implementations.
 """
 
-from . import linked_list
-from . import tree
-from . import heap
+from . import heap, linked_list, tree
 
-__all__ = ["linked_list", "tree", "heap"] 
+__all__ = ["linked_list", "tree", "heap"]
